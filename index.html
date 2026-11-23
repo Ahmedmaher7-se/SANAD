@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SANAD (سَنَد) — UI/UX Interactive Prototype</title>
+  <!-- Google Fonts: Cairo (Arabic) & Inter (English) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Global Controls Bar (Prototype Toolbar) -->
+  <header class="prototype-control-bar">
+    <div class="control-brand">
+      <span class="brand-title">SANAD (سَنَد) Prototype</span>
+      <span class="demo-badge">Graduation Project Demo</span>
+    </div>
+
+    <div class="control-actions">
+      <!-- Language Switcher -->
+      <div class="lang-switch-group">
+        <button id="btn-lang-ar" class="lang-btn active" onclick="setLanguage('ar')">العربية (RTL)</button>
+        <button id="btn-lang-en" class="lang-btn" onclick="setLanguage('en')">English (LTR)</button>
+      </div>
+
+      <!-- Quick Screen Jump Nav -->
+      <div class="screen-jump-group">
+        <span class="jump-label" data-i18n="quickJump">Quick Jump:</span>
+        <button class="jump-btn active" data-screen="scr-home" onclick="navigateTo('scr-home')">1. Home</button>
+        <button class="jump-btn" data-screen="scr-search" onclick="navigateTo('scr-search')">2. Search</button>
+        <button class="jump-btn" data-screen="scr-routes" onclick="navigateTo('scr-routes')">3. Routes</button>
+        <button class="jump-btn" data-screen="scr-nav" onclick="navigateTo('scr-nav')">4. Active Nav</button>
+        <button class="jump-btn" data-screen="scr-report" onclick="navigateTo('scr-report')">5. Report</button>
+        <button class="jump-btn" data-screen="scr-ai-scanner" onclick="navigateTo('scr-ai-scanner')">6. AI Scanner</button>
+        <button class="jump-btn" data-screen="scr-ocr-result" onclick="navigateTo('scr-ocr-result')">7. OCR Result</button>
+        <button class="jump-btn" data-screen="scr-sos" onclick="navigateTo('scr-sos')">8. SOS Emergency</button>
+        <button class="jump-btn" data-screen="scr-profile" onclick="navigateTo('scr-profile')">9. Profile</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Prototype Main Layout Container -->
+  <main class="prototype-viewport-container">
+
+    <!-- Mobile Device Frame Mockup -->
+    <div class="mobile-frame" id="mobile-frame">
+      <!-- Status Bar Simulation -->
+      <div class="device-status-bar">
+        <span class="status-time">10:42</span>
+        <div class="status-icons">
+          <span title="GPS Active">📡 GPS (±6.8m)</span>
+        <span class="demo-tag">[Simulated Demo Data]</span>
+          <span>📶 4G</span>
+          <span>🔋 88%</span>
+        </div>
+      </div>
+
+      <!-- Persistent Global Header (App Bar) -->
+      <div class="app-global-header">
+        <div class="app-branding">
+          <h1 class="app-title" data-i18n="appName">سَنَد</h1>
+          <span class="app-subtitle" data-i18n="appSubtitle">التنقل الميسّر</span>
+        </div>
+        <button class="btn-sos-global" id="btn-sos-header" onclick="navigateTo('scr-sos')" aria-label="طوارئ SOS">
+          <span class="sos-icon">🚨</span>
+          <span class="sos-text" data-i18n="sosButton">طوارئ SOS</span>
+        </button>
+      </div>
+
+      <!-- Offline / Data Status Banner -->
+      <div class="status-banner banner-live" id="status-banner">
+        <span class="banner-dot">●</span>
+        <span id="banner-text" data-i18n="liveBanner">متصل بالشبكة — تحديث بيانات إمكانية الوصول مباشر</span>
+      </div>
+
+      <!-- SCREEN CONTENT CANVAS -->
+      <div class="screen-content-area">
+
+        <!-- ========================================== -->
+        <!-- SCREEN 1: HOME (SCR-01)                    -->
+        <!-- ========================================== -->
+        <section id="scr-home" class="app-screen active">
+
+          <!-- Primary Action: Search Input Box Trigger -->
+          <div class="search-trigger-box" onclick="navigateTo('scr-search')" tabindex="0" role="button" aria-label="ابحث عن وجهة">
+            <span class="search-icon">🔍</span>
+            <span class="search-placeholder" data-i18n="searchPlaceholder">ابحث عن وجهة، مبنى، أو مرفق ميسّر...</span>
+          </div>
+
+          <!-- Frequent / Saved Destinations Carousel -->
+          <div class="section-container">
+            <div class="section-header">
+              <h2 class="section-title" data-i18n="frequentPlacesTitle">الوجهات المتكررة</h2>
+              <span class="demo-tag" data-i18n="demoData">بيانات تجريبية</span>
+            </div>
+
+            <div class="horizontal-shortcuts" id="saved-shortcuts-container">
+              <button class="shortcut-chip" onclick="selectQuickDestination('جامعة الملك سعود')">
+                <span class="chip-icon">🏠</span>
+                <span class="chip-label" data-i18n="placeHome">المنزل</span>
+              </button>
+              <button class="shortcut-chip" onclick="selectQuickDestination('المكتبة المركزية')">
+                <span class="chip-icon">🏢</span>
+                <span class="chip-label" data-i18n="placeWork">العمل</span>
+              </button>
+              <button class="shortcut-chip add-chip" onclick="showToast('ميزة إضافة موقع مفضل - تجريبية')">
+                <span class="chip-icon">➕</span>
+                <span class="chip-label" data-i18n="addPlace">إضافة موقع</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- AI Visual Assistant Row (Secondary Utility) -->
+          <div class="utility-card" onclick="openAIScanner()">
+            <div class="utility-icon-box">📸</div>
+            <div class="utility-info">
+              <h3 class="utility-title" data-i18n="aiTitle">المساعد البصري الذكي (OCR)</h3>
+              <p class="utility-desc" data-i18n="aiDesc">قراءة النصوص، الوصفات، واللوحات بدون إنترنت</p>
+            </div>
+            <span class="utility-arrow">‹</span>
+          </div>
+
+          <!-- Nearby Accessible Facilities (Evidence-Based Cards) -->
+          <div class="section-container">
+            <div class="section-header">
+              <h2 class="section-title" data-i18n="nearbyFacilitiesTitle">مرافق ميسّرة قريبة (ضمن 500م)</h2>
+            </div>
+
+            <div class="facility-cards-list">
+              <!-- Facility Card 1: Verified -->
+              <div class="facility-card">
+                <div class="facility-main">
+                  <span class="facility-type-icon">♿</span>
+                  <div class="facility-details">
+                    <h3 class="facility-name" data-i18n="facility1Name">دورة مياه ميسّرة — المبنى الرئيسي</h3>
+                    <p class="facility-meta" data-i18n="facility1Meta">المكتبة المركزية • الدور الأرضي • 120 متر</p>
+                  </div>
+                </div>
+                <div class="facility-status-row">
+                  <span class="badge badge-verified" data-i18n="badgeVerified">✓ موثق (قبل يومين بواسطة المشرف)</span>
+                  <button class="btn-card-action" onclick="navigateTo('scr-routes')" data-i18n="btnNavigate">توجيه</button>
+                </div>
+              </div>
+
+              <!-- Facility Card 2: Community Reported -->
+              <div class="facility-card">
+                <div class="facility-main">
+                  <span class="facility-type-icon">🛗</span>
+                  <div class="facility-details">
+                    <h3 class="facility-name" data-i18n="facility2Name">مصعد ميسّر — مدخل محطة المترو B</h3>
+                    <p class="facility-meta" data-i18n="facility2Meta">شارع الملك فهد • 350 متر</p>
+                  </div>
+                </div>
+                <div class="facility-status-row">
+                  <span class="badge badge-community" data-i18n="badgeCommunity">▲ بلاغ مجتمعي (اليوم)</span>
+                  <button class="btn-card-action" onclick="navigateTo('scr-routes')" data-i18n="btnNavigate">توجيه</button>
+                </div>
+              </div>
+
+              <!-- Facility Card 3: Unknown Status -->
+              <div class="facility-card">
+                <div class="facility-main">
+                  <span class="facility-type-icon">🅿️</span>
+                  <div class="facility-details">
+                    <h3 class="facility-name" data-i18n="facility3Name">موقف سيارات ميسّر — بوابة الحديقة</h3>
+                    <p class="facility-meta" data-i18n="facility3Meta">المدخل الشمالي • 480 متر</p>
+                  </div>
+                </div>
+                <div class="facility-status-row">
+                  <span class="badge badge-unknown" data-i18n="badgeUnknown">؟ حالة إمكانية الوصول غير مؤكدة</span>
+                  <button class="btn-card-action btn-outlined" onclick="navigateTo('scr-routes')" data-i18n="btnNavigate">توجيه</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 2: DESTINATION SEARCH (SCR-02)      -->
+        <!-- ========================================== -->
+        <section id="scr-search" class="app-screen">
+
+          <!-- Search Header Bar -->
+          <div class="search-header-bar">
+            <button class="btn-icon-back" onclick="navigateTo('scr-home')" aria-label="رجوع">
+              <span class="back-arrow">→</span>
+            </button>
+            <div class="search-input-wrapper">
+              <input type="text" id="dest-search-input" class="dest-input" placeholder="ابحث عن وجهة أو مكان..." data-i18n-placeholder="searchPlaceholder" oninput="onSearchQueryChange(this.value)">
+              <button class="btn-clear-search" id="btn-clear-input" onclick="clearSearchInput()" aria-label="مسح">✕</button>
+            </div>
+          </div>
+
+          <!-- Interactive Accessible Filters (>=48px touch area) -->
+          <div class="filter-chips-scroll">
+            <button class="filter-chip active" data-filter="all" onclick="toggleFilter(this, 'all')" data-i18n="filterAll">الكل</button>
+            <button class="filter-chip" data-filter="ramps" onclick="toggleFilter(this, 'ramps')" data-i18n="filterRamps">منحدرات مؤكدة</button>
+            <button class="filter-chip" data-filter="toilets" onclick="toggleFilter(this, 'toilets')" data-i18n="filterToilets">دورات مياه ميسّرة</button>
+            <button class="filter-chip" data-filter="elevators" onclick="toggleFilter(this, 'elevators')" data-i18n="filterElevators">مصاعد شغالة</button>
+          </div>
+
+          <!-- Recent Search History -->
+          <div class="search-section" id="recent-search-section">
+            <div class="section-header">
+              <span class="sub-header-title" data-i18n="recentSearches">عمليات البحث الأخيرة</span>
+              <button class="btn-text-link" onclick="clearSearchHistory()" data-i18n="clearHistory">مسح السجل</button>
+            </div>
+            <ul class="history-list" id="history-list">
+              <li class="history-item" onclick="selectDestination('المكتبة المركزية - جامعة الملك سعود')">
+                <span class="hist-icon">🕒</span>
+                <div class="hist-text">
+                  <span class="hist-title">المكتبة المركزية - جامعة الملك سعود</span>
+                  <span class="hist-subtitle" data-i18n="hist1Sub">آخر زيارة قبل 3 أيام</span>
+                </div>
+              </li>
+              <li class="history-item" onclick="selectDestination('مستشفى الملك خالد الجامعي')">
+                <span class="hist-icon">🕒</span>
+                <div class="hist-text">
+                  <span class="hist-title">مستشفى الملك خالد الجامعي</span>
+                  <span class="hist-subtitle" data-i18n="hist2Sub">آخر زيارة الأسبوع الماضي</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Search Results List (Dynamic Filtered) -->
+          <div class="search-section">
+            <div class="section-header">
+              <span class="sub-header-title" data-i18n="searchResultsTitle">نتائج المقترحات</span>
+            </div>
+
+            <div class="search-results-list" id="search-results-container">
+              <!-- Result Item 1 -->
+              <div class="result-card" data-category="ramps elevators" onclick="selectDestination('المكتبة المركزية — المدخل الرئيسي')">
+                <div class="result-main">
+                  <span class="result-icon">📍</span>
+                  <div class="result-info">
+                    <h3 class="result-title">المكتبة المركزية — المدخل الرئيسي</h3>
+                    <p class="result-address">طريق الجامعة، الدرعية</p>
+                  </div>
+                </div>
+                <div class="result-evidence-row">
+                  <span class="badge badge-verified" data-i18n="result1Badge">✓ مدخل ميسّر بمنحدر ومصعد (موثق)</span>
+                </div>
+              </div>
+
+              <!-- Result Item 2 -->
+              <div class="result-card" data-category="ramps toilets" onclick="selectDestination('مركز الأنشطة الطلابية — القاعة A')">
+                <div class="result-main">
+                  <span class="result-icon">📍</span>
+                  <div class="result-info">
+                    <h3 class="result-title">مركز الأنشطة الطلابية — القاعة A</h3>
+                    <p class="result-address">مبنى 17، الحرم الجامعي</p>
+                  </div>
+                </div>
+                <div class="result-evidence-row">
+                  <span class="badge badge-community" data-i18n="result2Badge">▲ بلاغ مجتمعي: منحدر متوفر، دورة مياه ميسّرة</span>
+                </div>
+              </div>
+
+              <!-- Result Item 3 -->
+              <div class="result-card" data-category="elevators" onclick="selectDestination('محطة المترو الرئيسية — البوابة 3')">
+                <div class="result-main">
+                  <span class="result-icon">📍</span>
+                  <div class="result-info">
+                    <h3 class="result-title">محطة المترو الرئيسية — البوابة 3</h3>
+                    <p class="result-address">شارع الملك عبد العزيز</p>
+                  </div>
+                </div>
+                <div class="result-evidence-row">
+                  <span class="badge badge-unknown" data-i18n="result3Badge">؟ حالة إمكانية الوصول غير مؤكدة</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 3: ROUTE SELECTION (SCR-03)         -->
+        <!-- ========================================== -->
+        <section id="scr-routes" class="app-screen">
+
+          <!-- Route Screen Header -->
+          <div class="screen-header-bar">
+            <button class="btn-icon-back" onclick="navigateTo('scr-search')" aria-label="رجوع">
+              <span class="back-arrow">→</span>
+            </button>
+            <div class="screen-header-title">
+              <h2 class="header-dest-name" id="route-dest-display">المكتبة المركزية</h2>
+              <span class="header-sub" data-i18n="routeOptionsSub">خيارات المسارات المتاحة</span>
+            </div>
+          </div>
+
+          <!-- Collapsible Mini Map Canvas -->
+          <div class="mini-map-container" id="mini-map-box">
+            <div class="map-mockup-graphic">
+              <!-- SVG Simulated Route Map -->
+              <svg width="100%" height="100%" viewBox="0 0 360 160" preserveAspectRatio="none">
+                <path d="M 30 130 Q 100 30 180 80 T 330 30" fill="none" stroke="#005B60" stroke-width="6" stroke-dasharray="8 4"/>
+                <path d="M 30 130 Q 120 140 220 110 T 330 30" fill="none" stroke="#0F2C59" stroke-width="7"/>
+                <!-- Start & End Nodes -->
+                <circle cx="30" cy="130" r="9" fill="#005B60"/>
+                <circle cx="330" cy="30" r="9" fill="#C5221F"/>
+                <!-- Barrier marker on Route B -->
+                <circle cx="180" cy="80" r="7" fill="#9C5200"/>
+              </svg>
+              <div class="map-overlay-tag" data-i18n="mapLegend">خريطة تفاعلية: المسار الأخضر (عقبات أقل)</div>
+            </div>
+            <button class="btn-map-toggle" onclick="toggleMapHeight()" aria-label="تكبير/تصغير الخريطة">
+              <span id="map-toggle-icon">↕️</span> <span data-i18n="toggleMap">تغيير حجم الخريطة</span>
+            </button>
+          </div>
+
+          <!-- Route Options Comparison List -->
+          <div class="routes-cards-scroll">
+
+            <!-- Route Card A: Recommended / Fewer Barriers -->
+            <div class="route-card selected" id="route-card-a" onclick="selectRouteCard('a')">
+              <div class="route-card-header">
+                <span class="route-tag badge-verified" data-i18n="routeATag">عقبات أقل مصرح بها</span>
+                <span class="route-name" data-i18n="routeAName">مسار A: طريق الحرم الجامعي الميسّر</span>
+              </div>
+
+              <div class="route-metrics-row">
+                <div class="metric-item">
+                  <span class="metric-val">14 <small data-i18n="unitMin">دقيقة</small> <span class="demo-tag">[Simulated]</span></span>
+                  <span class="metric-lbl" data-i18n="lblEstTime">الزمن المتوقع</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="metric-item">
+                  <span class="metric-val">850 <small data-i18n="unitMeter">متر</small></span>
+                  <span class="metric-lbl" data-i18n="lblDistance">المسافة</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="metric-item">
+                  <span class="metric-val text-success" data-i18n="valNoStairs">بدون درج</span>
+                  <span class="metric-lbl" data-i18n="lblBarriers">العقبات المعروفة</span>
+                </div>
+              </div>
+
+              <!-- Evidence & Data Confidence Badge -->
+              <div class="evidence-box">
+                <span class="evidence-title" data-i18n="evidenceTitle">موثوقية البيانات والأدلة:</span>
+                <p class="evidence-text" data-i18n="routeAEvidence">✓ تم تأكيد وجود المنحدرات وخلو الطريق قبل يومين (تحديث المشرف).</p>
+              </div>
+
+              <!-- Collapsible Details Section -->
+              <details class="route-details-drawer">
+                <summary class="drawer-trigger" data-i18n="viewDetails">عرض التفاصيل ومصادر البيانات (توضيحي)</summary>
+                <div class="drawer-content">
+                  <p data-i18n="routeADetails">• طبيعة الرصيف: خرسانة ناعمة ومستوية.<br>• أقصى انحدار متوقع: 3% (ضمن الحدود الميسّرة).<br>• حالة المصاعد: لا يتطلب استخدام مصعد.</p>
+                </div>
+              </details>
+
+              <button class="btn-primary btn-start-nav" onclick="startNavigation('Route A')" data-i18n="btnStartNav">
+                ابدأ التوجيه المباشر (مسار A)
+              </button>
+            </div>
+
+            <!-- Route Card B: Direct / Known Barriers -->
+            <div class="route-card" id="route-card-b" onclick="selectRouteCard('b')">
+              <div class="route-card-header">
+                <span class="route-tag badge-unknown" data-i18n="routeBTag">توجد عقبات معروفة</span>
+                <span class="route-name" data-i18n="routeBName">مسار B: الطريق الشرقي المباشر</span>
+              </div>
+
+              <div class="route-metrics-row">
+                <div class="metric-item">
+                  <span class="metric-val">9 <small data-i18n="unitMin">دقائق</small> <span class="demo-tag">[Simulated]</span></span>
+                  <span class="metric-lbl" data-i18n="lblEstTime">الزمن المتوقع</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="metric-item">
+                  <span class="metric-val">520 <small data-i18n="unitMeter">متر</small></span>
+                  <span class="metric-lbl" data-i18n="lblDistance">المسافة</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="metric-item">
+                  <span class="metric-val text-warning" data-i18n="valStairs">4 درج</span>
+                  <span class="metric-lbl" data-i18n="lblBarriers">العقبات المعروفة</span>
+                </div>
+              </div>
+
+              <!-- Evidence & Data Confidence Badge -->
+              <div class="evidence-box">
+                <span class="evidence-title" data-i18n="evidenceTitle">موثوقية البيانات والأدلة:</span>
+                <p class="evidence-text" data-i18n="routeBEvidence">⚠️ يتضمن درج بدون منحدر عند شارع 12 (بلاغ مجتمعي غير مؤكد).</p>
+              </div>
+
+              <button class="btn-outlined btn-start-nav" onclick="startNavigation('Route B')" data-i18n="btnSelectRouteB">
+                اختيار مسار B (مع العلم بالعقبات)
+              </button>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 4: ACTIVE NAVIGATION (SCR-04)       -->
+        <!-- ========================================== -->
+        <section id="scr-nav" class="app-screen">
+
+          <!-- LEVEL 1: Turn Instruction Banner (Highest Priority) -->
+          <div class="nav-turn-card">
+            <div class="turn-icon-box">⬅️</div>
+            <div class="turn-text-info">
+              <span class="turn-dist" data-i18n="turnDist">بعد 50 متراً</span>
+              <h2 class="turn-action" data-i18n="turnAction">انعطف يساراً نحو ممر الحرم الجامعي</h2>
+            </div>
+          </div>
+
+          <!-- LEVEL 2: Navigation GIS Map Canvas with Animated Marker -->
+          <div class="nav-map-canvas">
+            <!-- Simulated Map Canvas Graphics -->
+            <svg width="100%" height="100%" viewBox="0 0 360 260" preserveAspectRatio="none">
+              <!-- Grid background lines -->
+              <line x1="0" y1="50" x2="360" y2="50" stroke="#E2E8F0" stroke-width="1"/>
+              <line x1="0" y1="120" x2="360" y2="120" stroke="#E2E8F0" stroke-width="1"/>
+              <line x1="0" y1="190" x2="360" y2="190" stroke="#E2E8F0" stroke-width="1"/>
+
+              <!-- Planned Route Trail -->
+              <path id="nav-path-trail" d="M 180 230 L 180 110 L 80 110" fill="none" stroke="#005B60" stroke-width="10" stroke-linecap="round"/>
+
+              <!-- Animated Wheelchair User Marker -->
+              <g id="user-nav-marker" transform="translate(180, 180)">
+                <circle cx="0" cy="0" r="16" fill="#0F2C59" opacity="0.2"/>
+                <circle cx="0" cy="0" r="11" fill="#0F2C59"/>
+                <text x="-6" y="5" fill="#FFFFFF" font-size="12">♿</text>
+              </g>
+            </svg>
+
+            <!-- Map Orientation Controls Overlay -->
+            <div class="map-controls-overlay">
+              <button class="btn-map-control" id="btn-compass-mode" onclick="toggleCompassMode()" aria-label="تغيير اتجاه الخريطة">
+                <span id="compass-icon">🧭</span> <span id="compass-label" data-i18n="headingUp">اتجاه الحركة</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- LEVEL 3: Motion-Optimized 1-Tap Quick Obstacle Mark Trigger -->
+          <div class="quick-obstacle-bar">
+            <button class="btn-quick-report" onclick="triggerQuickObstacleMark()" aria-label="تسجيل عقبة بنقرة واحدة">
+              <span class="report-icon">⚠️</span>
+              <span class="report-label" data-i18n="btnQuickMark">تسجيل عقبة بنقرة واحدة (موقعك الحالي)</span>
+            </button>
+          </div>
+
+          <!-- LEVEL 4 & 5: Trip Metrics & Controls Panel -->
+          <div class="nav-bottom-panel">
+            <div class="trip-metrics-row">
+              <div class="metric-cell">
+                <span class="m-val" id="nav-time-left">11 <small data-i18n="unitMin">دقيقة</small></span>
+                <span class="m-lbl" data-i18n="lblTimeLeft">المتبقي</span>
+              </div>
+              <div class="metric-cell">
+                <span class="m-val">650 <small data-i18n="unitMeter">متر</small></span>
+                <span class="m-lbl" data-i18n="lblDistLeft">المسافة</span>
+              </div>
+              <div class="metric-cell">
+                <span class="m-val">10:45 <span class="demo-tag">[Simulated]</span></span>
+                <span class="m-lbl" data-i18n="lblETA">الوصول المتوقع</span>
+              </div>
+            </div>
+
+            <!-- Controls Row -->
+            <div class="nav-controls-row">
+              <button class="btn-nav-ctrl" id="btn-audio-toggle" onclick="toggleAudioMute()" aria-label="كتم الصوت">
+                <span id="audio-icon">🔊</span>
+                <span id="audio-label" data-i18n="ctrlAudio">صوت ناطق</span>
+              </button>
+
+              <button class="btn-nav-ctrl" onclick="recenterNavMap()" aria-label="إعادة التمركز">
+                <span>🎯</span>
+                <span data-i18n="ctrlRecenter">إعادة التمركز</span>
+              </button>
+
+              <button class="btn-nav-ctrl btn-end-trip" onclick="confirmEndTrip()" aria-label="إنهاء الرحلة">
+                <span>⏹️</span>
+                <span data-i18n="ctrlEndTrip">إنهاء الرحلة</span>
+              </button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 5: OBSTACLE REPORTING (SCR-07)      -->
+        <!-- ========================================== -->
+        <section id="scr-report" class="app-screen">
+
+          <!-- Report Screen Header -->
+          <div class="screen-header-bar">
+            <button class="btn-icon-back" onclick="navigateTo('scr-home')" aria-label="رجوع">
+              <span class="back-arrow">→</span>
+            </button>
+            <div class="screen-header-title">
+              <h2 class="header-dest-name" data-i18n="reportScreenTitle">إبلاغ عن عائق</h2>
+              <span class="header-sub" data-i18n="reportScreenSub">ساعد في تحسين الطريق للجميع</span>
+            </div>
+          </div>
+
+          <!-- Location Confirmation Banner -->
+          <div class="location-confirm-banner">
+            <div class="location-icon">📍</div>
+            <div class="location-info">
+              <p class="location-label" data-i18n="reportLocationLabel">موقع البلاغ (تلقائي):</p>
+              <p class="location-value">24.7136° N, 46.6753° E <span class="demo-tag">[Simulated]</span></p>
+              <p class="location-accuracy" data-i18n="reportAccuracyLabel">دقة GPS المقاسة: ±6.8 متر <span class="demo-tag">[Simulated]</span></p>
+            </div>
+            <button class="btn-icon-refresh" onclick="refreshGPSLocation()" aria-label="تحديث الموقع">
+              ↻
+            </button>
+          </div>
+
+          <!-- Obstacle Category Selection -->
+          <div class="section-container">
+            <div class="section-header">
+              <h2 class="section-title" data-i18n="reportCategoryTitle">نوع العائق</h2>
+            </div>
+            <div class="category-grid" id="category-grid">
+              <!-- Categories will be populated by JS -->
+            </div>
+          </div>
+
+          <!-- Additional Details -->
+          <div class="section-container">
+            <div class="section-header">
+              <h2 class="section-title" data-i18n="reportDetailsTitle">تفاصيل إضافية</h2>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" data-i18n="reportDescriptionLabel">وصف العائق (اختياري):</label>
+              <textarea id="report-description" class="form-textarea" rows="3" placeholder="مثال: المنحدر مسدود بسيارة متوقفة، أو المصعد معطل منذ صباح اليوم..." data-i18n-placeholder="reportDescriptionPlaceholder"></textarea>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" data-i18n="reportSeverityLabel">مستوى الخطورة:</label>
+              <div class="severity-selector">
+                <button class="severity-btn active" data-severity="low" onclick="selectSeverity('low')">
+                  <span class="sev-icon">🟢</span>
+                  <span class="sev-label" data-i18n="sevLow">منخفض</span>
+                  <span class="sev-desc" data-i18n="sevLowDesc">مرور ممكن بصعوبة</span>
+                </button>
+                <button class="severity-btn" data-severity="medium" onclick="selectSeverity('medium')">
+                  <span class="sev-icon">🟡</span>
+                  <span class="sev-label" data-i18n="sevMedium">متوسط</span>
+                  <span class="sev-desc" data-i18n="sevMedDesc">يتطلب مسار بديل</span>
+                </button>
+                <button class="severity-btn" data-severity="high" onclick="selectSeverity('high')">
+                  <span class="sev-icon">🔴</span>
+                  <span class="sev-label" data-i18n="sevHigh">عالي</span>
+                  <span class="sev-desc" data-i18n="sevHighDesc">ممر غير سالك تماماً</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" data-i18n="reportPhotoLabel">صورة العائق (اختياري):</label>
+              <div class="photo-attach-area" id="photo-attach-area">
+                <button class="btn-photo-attach" onclick="simulatePhotoAttach()">
+                  <span class="photo-icon">📷</span>
+                  <span class="photo-text" data-i18n="attachPhoto">إرفاق صورة</span>
+                </button>
+                <div class="photo-preview hidden" id="photo-preview">
+                  <img id="attached-photo" src="" alt="صورة العائق المرفقة">
+                  <button class="btn-remove-photo" onclick="removeAttachedPhoto()" aria-label="إزالة الصورة">✕</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="report-actions">
+            <button class="btn-primary btn-submit-report" onclick="submitObstacleReportFull()" data-i18n="btnSubmitReportFull">
+              إرسال البلاغ للمراجعة المجتمعية
+            </button>
+            <button class="btn-outlined" onclick="navigateTo('scr-home')" data-i18n="btnCancelReport">
+              إلغاء
+            </button>
+          </div>
+
+          <!-- Post-Submission Info Box (shown after submit) -->
+          <div class="submission-confirmation hidden" id="submission-confirmation">
+            <div class="confirm-icon">✅</div>
+            <h3 data-i18n="reportSubmittedTitle">تم إرسال البلاغ</h3>
+            <p data-i18n="reportSubmittedDesc">شكراً لك! تم إضافة بلاغك إلى قائمة المراجعة المجتمعية. سيقوم المشرفون بالتحقق منه خلال 24-48 ساعة.</p>
+            <p class="submission-ref" data-i18n="reportRefLabel">الرقم المرجعي: <strong>SND-20241123-<span id="report-ref-num">XXXX</span></strong> <span class="demo-tag">[Simulated]</span></p>
+            <button class="btn-primary" onclick="resetReportForm()" data-i18n="btnNewReport">إبلاغ عن عائق آخر</button>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 6: AI SCANNER / CAMERA VIEWFINDER (SCR-05) -->
+        <!-- ========================================== -->
+        <section id="scr-ai-scanner" class="app-screen">
+
+          <!-- Scanner Header -->
+          <div class="screen-header-bar">
+            <button class="btn-icon-back" onclick="closeAIScanner()" aria-label="رجوع">
+              <span class="back-arrow">→</span>
+            </button>
+            <div class="screen-header-title">
+              <h2 class="header-dest-name" data-i18n="aiScannerTitle">المساعد البصري</h2>
+              <span class="header-sub" data-i18n="aiScannerSub">OCR للغة العربية والإنجليزية — يعمل بلا إنترنت</span>
+            </div>
+          </div>
+
+          <!-- Camera Viewfinder Full Screen -->
+          <div class="scanner-viewfinder-full" id="scanner-viewfinder">
+            <!-- Corner Brackets Overlay -->
+            <div class="scanner-corners">
+              <div class="corner tl"></div>
+              <div class="corner tr"></div>
+              <div class="corner bl"></div>
+              <div class="corner br"></div>
+            </div>
+
+            <!-- Center Guide Text -->
+            <div class="scanner-guide">
+              <span class="guide-text" data-i18n="scannerGuideText">وجه الكاميرا نحو النص أو ملصق الدواء</span>
+              <div class="scanner-line"></div>
+            </div>
+
+            <!-- Detected Text Regions (Simulated) -->
+            <div class="detected-regions hidden" id="detected-regions">
+              <div class="detected-box" style="top: 30%; left: 15%; width: 70%; height: 15%;"></div>
+              <div class="detected-box" style="top: 55%; left: 20%; width: 60%; height: 12%;"></div>
+            </div>
+
+            <!-- Bottom Controls Bar -->
+            <div class="scanner-bottom-controls">
+              <div class="scanner-mode-tabs">
+                <button class="mode-tab active" data-mode="document" onclick="setScannerMode('document')" data-i18n="modeDocument">مستند</button>
+                <button class="mode-tab" data-mode="medicine" onclick="setScannerMode('medicine')" data-i18n="modeMedicine">دواء</button>
+                <button class="mode-tab" data-mode="sign" onclick="setScannerMode('sign')" data-i18n="modeSign">لوحة/علامة</button>
+              </div>
+
+              <button class="btn-capture-large" id="btn-capture-large" onclick="captureOCRFromScanner()">
+                <span class="capture-ring"></span>
+                <span class="capture-inner"></span>
+              </button>
+
+              <div class="scanner-secondary-actions">
+                <button class="btn-icon-action" onclick="toggleFlashlight()" aria-label="فلاش">
+                  <span id="flash-icon">🔦</span>
+                </button>
+                <button class="btn-icon-action" onclick="openGalleryForOCR()" aria-label="اختيار من المعرض">
+                  <span>🖼️</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Processing Overlay -->
+          <div class="processing-overlay hidden" id="processing-overlay">
+            <div class="processing-spinner"></div>
+            <p class="processing-text" data-i18n="processingText">جاري تحليل النص...</p>
+            <p class="processing-subtext" data-i18n="processingSubtext">نموذج CRNN INT8 يعمل محلياً على جهازك</p>
+          </div>
+
+          <!-- Quick Result Preview (Bottom Sheet Style) -->
+          <div class="scanner-result-preview hidden" id="scanner-result-preview">
+            <div class="preview-handle"></div>
+            <div class="preview-content">
+              <div class="preview-header">
+                <h3 data-i18n="previewTitle">نص مكتشف</h3>
+                <span class="preview-confidence" id="preview-confidence">ثقة: 87% <span class="demo-tag">[Simulated]</span></span>
+              </div>
+              <p class="preview-text" id="preview-text">"تناول حبة واحدة مرتين يومياً..."</p>
+              <div class="preview-actions">
+                <button class="btn-outlined" onclick="dismissPreview()">متابعة المسح</button>
+                <button class="btn-primary" onclick="navigateToOCRResult()">عرض التفاصيل والقراءة الصوتية</button>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 7: OCR RESULT & READER (SCR-06)    -->
+        <!-- ========================================== -->
+        <section id="scr-ocr-result" class="app-screen">
+
+          <!-- OCR Result Header -->
+          <div class="screen-header-bar">
+            <button class="btn-icon-back" onclick="navigateTo('scr-ai-scanner')" aria-label="رجوع">
+              <span class="back-arrow">→</span>
+            </button>
+            <div class="screen-header-title">
+              <h2 class="header-dest-name" data-i18n="ocrResultTitle">نتيجة القراءة</h2>
+              <span class="header-sub" data-i18n="ocrResultSub">مراجعة وتحرير النص المستخرج</span>
+            </div>
+            <button class="btn-icon-action" onclick="shareOCRResult()" aria-label="مشاركة">
+              <span>⤴️</span>
+            </button>
+          </div>
+
+          <!-- Safety Warning Banner (Conditional - Low Confidence) -->
+          <div class="warning-banner-amber ocr-safety-warning" id="ocr-safety-warning">
+            <strong data-i18n="ocrWarnTitle">⚠️ تنبيه سلامة هام (دقة القراءة 62%):</strong>
+            <p data-i18n="ocrWarnText">هذه قراءة آلية تجريبية. تأكد شخصياً من اسم ومقدار جرعات الأدوية قبل تناولها.</p>
+          </div>
+
+          <!-- High Confidence Badge (Conditional) -->
+          <div class="confidence-banner-high hidden" id="confidence-banner-high">
+            <span class="confidence-icon">✅</span>
+            <span data-i18n="highConfidenceText">دقة قراءة عالية: 94% — نص موثوق للمراجعة <span class="demo-tag">[Simulated]</span></span>
+          </div>
+
+          <!-- Source Image Thumbnail -->
+          <div class="ocr-source-image" id="ocr-source-image">
+            <div class="source-placeholder">
+              <span class="placeholder-icon">📷</span>
+              <span data-i18n="sourceImageAlt">صورة المصدر الممسوحة</span>
+            </div>
+          </div>
+
+          <!-- Extracted Text Editor -->
+          <div class="section-container">
+            <div class="section-header">
+              <h2 class="section-title" data-i18n="extractedTextTitle">النص المستخرج</h2>
+            </div>
+
+            <div class="text-editor-wrapper">
+              <textarea id="ocr-extracted-text" class="form-textarea text-editor" rows="8" data-i18n-placeholder="ocrTextPlaceholder">تناول حبة واحدة مرتين يومياً بعد الطعام. يحفظ في مكان بارد وجاف بعيداً عن أشعة الشمس.</textarea>
+              <div class="editor-toolbar">
+                <button class="toolbar-btn" onclick="copyOCRText()" aria-label="نسخ النص">
+                  <span>📋</span> <span data-i18n="btnCopy">نسخ</span>
+                </button>
+                <button class="toolbar-btn" onclick="editOCRText()" id="btn-edit-text" aria-label="تحرير">
+                  <span>✏️</span> <span data-i18n="btnEdit">تحرير</span>
+                </button>
+                <button class="toolbar-btn" onclick="translateOCRText()" aria-label="ترجمة">
+                  <span>🌐</span> <span data-i18n="btnTranslate">ترجمة</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medication-Specific Parsing (Conditional) -->
+          <div class="medication-parsed-card hidden" id="medication-parsed-card">
+            <div class="parsed-header">
+              <span class="parsed-icon">💊</span>
+              <h3 data-i18n="parsedTitle">معلومات الدواء المستخرجة</h3>
+            </div>
+            <div class="parsed-fields">
+              <div class="parsed-field">
+                <span class="field-label" data-i18n="fieldName">اسم الدواء:</span>
+                <span class="field-value" id="parsed-name">—</span>
+              </div>
+              <div class="parsed-field">
+                <span class="field-label" data-i18n="fieldDosage">الجرعة:</span>
+                <span class="field-value" id="parsed-dosage">—</span>
+              </div>
+              <div class="parsed-field">
+                <span class="field-label" data-i18n="fieldFrequency">التكرار:</span>
+                <span class="field-value" id="parsed-frequency">—</span>
+              </div>
+              <div class="parsed-field">
+                <span class="field-label" data-i18n="fieldStorage">التخزين:</span>
+                <span class="field-value" id="parsed-storage">—</span>
+              </div>
+            </div>
+            <p class="parsed-disclaimer" data-i18n="parsedDisclaimer">⚠️ استخراج آلي — راجع العبوة الأصلية والطبيب/الصيدلي للتأكيد.</p>
+          </div>
+
+          <!-- TTS Audio Controls -->
+          <div class="section-container">
+            <div class="section-header">
+              <h2 class="section-title" data-i18n="ttsTitle">القراءة الصوتية (TTS)</h2>
+            </div>
+
+            <div class="tts-player">
+              <div class="tts-main-controls">
+                <button class="btn-tts-play" id="btn-tts-play" onclick="playFullTTSSpeech()">
+                  <span id="tts-play-icon">▶️</span>
+                  <span id="tts-play-label" data-i18n="btnPlayFull">قراءة النص كاملاً</span>
+                </button>
+                <button class="btn-tts-pause hidden" id="btn-tts-pause" onclick="pauseTTSSpeech()">
+                  <span>⏸️</span>
+                  <span data-i18n="btnPause">إيقاف مؤقت</span>
+                </button>
+                <button class="btn-tts-stop" onclick="stopTTSSpeech()" data-i18n="btnStop">إيقاف</button>
+              </div>
+
+              <div class="tts-speed-control">
+                <label class="speed-label" data-i18n="speedLabel">السرعة:</label>
+                <div class="speed-buttons">
+                  <button class="speed-btn" data-speed="0.75" onclick="setTTSSpeed(0.75)">0.75x</button>
+                  <button class="speed-btn active" data-speed="1.0" onclick="setTTSSpeed(1.0)">1.0x</button>
+                  <button class="speed-btn" data-speed="1.25" onclick="setTTSSpeed(1.25)">1.25x</button>
+                  <button class="speed-btn" data-speed="1.5" onclick="setTTSSpeed(1.5)">1.5x</button>
+                </div>
+              </div>
+
+              <div class="tts-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" id="tts-progress-fill"></div>
+                </div>
+                <span class="progress-time" id="tts-progress-time">0:00 / 0:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="ocr-actions">
+            <button class="btn-primary" onclick="rescanFromResult()" data-i18n="btnRescan">مسح جديد</button>
+            <button class="btn-outlined" onclick="saveToHistory()" data-i18n="btnSaveHistory">حفظ في السجل</button>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 8: SOS EMERGENCY (FULL SCREEN) (SCR-08) -->
+        <!-- ========================================== -->
+        <section id="scr-sos" class="app-screen sos-screen">
+
+          <!-- SOS Header - High Contrast Emergency Style -->
+          <div class="sos-header-bar">
+            <button class="btn-icon-back" onclick="navigateTo('scr-home')" aria-label="رجوع">
+              <span class="back-arrow">→</span>
+            </button>
+            <div class="screen-header-title">
+              <h2 class="header-dest-name sos-title-text" data-i18n="sosScreenTitle">طوارئ SOS</h2>
+            </div>
+          </div>
+
+          <!-- Emergency Status Banner -->
+          <div class="sos-status-banner">
+            <div class="sos-pulse-ring"></div>
+            <h3 data-i18n="sosReadyTitle">جاهز للإرسال</h3>
+            <p data-i18n="sosReadyDesc">اضغط الزر الأحمر الكبير أدناه لإرسال تنبيه الطوارئ</p>
+          </div>
+
+          <!-- Location & Network Status Card -->
+          <div class="section-container">
+            <div class="section-header">
+              <h2 class="section-title" data-i18n="sosStatusTitle">معلومات الإرسال</h2>
+            </div>
+
+            <div class="sos-info-grid">
+              <div class="sos-info-card">
+                <span class="info-icon">📍</span>
+                <div class="info-content">
+                  <span class="info-label" data-i18n="sosGPS">إحداثيات الموقع</span>
+                  <span class="info-value">24.7136° N, 46.6753° E <span class="demo-tag">[Simulated]</span></span>
+                </div>
+              </div>
+              <div class="sos-info-card">
+                <span class="info-icon">🎯</span>
+                <div class="info-content">
+                  <span class="info-label" data-i18n="sosAccuracy">دقة GPS المقاسة</span>
+                  <span class="info-value">±7.4 متر <span class="demo-tag">[Simulated]</span></span>
+                </div>
+              </div>
+              <div class="sos-info-card">
+                <span class="info-icon" id="net-status-icon">📶</span>
+                <div class="info-content">
+                  <span class="info-label" data-i18n="sosNet">حالة الاتصال</span>
+                  <span class="info-value text-success" id="net-status-text" data-i18n="netOnline">متصل بالإنترنت</span>
+                </div>
+              </div>
+              <div class="sos-info-card">
+                <span class="info-icon">⏱️</span>
+                <div class="info-content">
+                  <span class="info-label" data-i18n="sosTime">وقت الطلب</span>
+                  <span class="info-value" id="sos-request-time">10:42:15 <span class="demo-tag">[Simulated]</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Authorized Recipients -->
+          <div class="section-container">
+            <div class="section-header">
+              <h2 class="section-title" data-i18n="sosContactsTitle">المستلمون المصرح لهم</h2>
+            </div>
+
+            <div class="recipients-list">
+              <div class="recipient-card">
+                <div class="recipient-avatar">م</div>
+                <div class="recipient-info">
+                  <span class="recipient-name">محمد الكيالي (المرافق التجريبي)</span>
+                  <span class="recipient-contact">+966 50 000 0001 <span class="demo-tag">[Demo] [Simulated]</span></span>
+                </div>
+                <span class="recipient-status">SMS + Push <span class="demo-tag">[Simulated]</span></span>
+              </div>
+              <div class="recipient-card">
+                <div class="recipient-avatar emergency-avatar">٩٩٩</div>
+                <div class="recipient-info">
+                  <span class="recipient-name">خدمات الطوارئ التجريبية</span>
+                  <span class="recipient-contact">999 <span class="demo-tag">[Demo]</span></span>
+                </div>
+                <span class="recipient-status">SMS فقط <span class="demo-tag">[Simulated]</span></span>
+              </div>
+              <button class="recipient-card add-recipient" onclick="showToast('إضافة جهة اتصال طوارئ - واجهة تجريبية [Demo UI]')" aria-label="إضافة جهة اتصال طوارئ">
+                <span class="recipient-avatar add-avatar">+</span>
+                <div class="recipient-info">
+                  <span class="recipient-name" data-i18n="addContact">إضافة جهة اتصال طوارئ</span>
+                  <span class="recipient-contact" data-i18n="addContactDesc">من إعدادات الحساب [Demo UI]</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Main SOS Activation Button -->
+          <div class="sos-main-action">
+            <button class="btn-sos-massive" id="btn-sos-massive" aria-label="إرسال تنبيه طوارئ فوري">
+              <div class="sos-button-content">
+                <span class="sos-big-icon">🚨</span>
+                <span class="sos-big-text" data-i18n="sosBigButton">إرسال تنبيه الطوارئ الآن</span>
+                <span class="sos-hold-hint" data-i18n="sosHoldHint">اضغط مطولاً للتأكيد</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Fallback Explanation -->
+          <div class="sos-fallback-info">
+            <p data-i18n="sosFootnote">توضيح: عند عدم توفر إنترنت، سيعرض التطبيق سيناريو SMS احتياطياً [محاكاة] — لا يتم فتح تطبيق الرسائل الحقيقي في هذا النموذج التجريبي.</p>
+          </div>
+
+          <!-- Dispatch Result Feedback (shown after activation) -->
+          <div class="dispatch-feedback-full hidden" id="sos-dispatch-full">
+            <div class="feedback-icon" id="dispatch-icon">✅</div>
+            <h3 id="dispatch-title" data-i18n="dispatchSent">تم إرسال التنبيه</h3>
+            <p id="dispatch-detail"></p>
+            <div class="dispatch-details">
+              <p id="dispatch-mode"></p>
+              <p id="dispatch-recipients"></p>
+            </div>
+            <button class="btn-primary" onclick="closeSOSFullScreen()" data-i18n="btnOK">حسناً، عودة للرئيسية</button>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 9: PROFILE & ACCESSIBILITY SETTINGS (SCR-09) -->
+        <!-- ========================================== -->
+        <section id="scr-profile" class="app-screen">
+
+          <!-- Profile Header -->
+          <div class="screen-header-bar">
+            <div class="screen-header-title">
+              <h2 class="header-dest-name" data-i18n="profileTitle">الملف الشخصي والإعدادات</h2>
+              <span class="header-sub" data-i18n="profileSub">تخصيص تجربة التنقل وإمكانية الوصول</span>
+            </div>
+          </div>
+
+          <!-- User Profile Card -->
+          <div class="profile-header-card">
+            <div class="profile-avatar">م</div>
+            <div class="profile-info">
+              <h3 class="profile-name" id="profile-name">محمود العتيبي</h3>
+              <p class="profile-email" id="profile-email">mahmoud@example.com</p>
+              <span class="profile-role" data-i18n="profileRole">مستخدم مسجل • خطة مجانية</span>
+            </div>
+            <button class="btn-edit-profile" onclick="showToast('تحرير الملف الشخصي - تجريبية')" aria-label="تحرير الملف">
+              ✏️
+            </button>
+          </div>
+
+          <!-- Settings Sections -->
+          <div class="settings-list">
+
+            <!-- Accessibility Section -->
+            <div class="settings-section">
+              <div class="settings-section-header">
+                <span class="section-icon">♿</span>
+                <h3 class="settings-section-title" data-i18n="accessibilityTitle">إمكانية الوصول</h3>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="fontSizeLabel">حجم الخط</span>
+                  <span class="setting-desc" data-i18n="fontSizeDesc">تكبير النص في جميع الشاشات</span>
+                </div>
+                <div class="setting-control">
+                  <div class="slider-container">
+                    <button class="slider-btn" onclick="adjustFontSize(-1)" aria-label="تصغير الخط">−</button>
+                    <div class="slider-track">
+                      <div class="slider-fill" id="font-size-fill" style="width: 50%;"></div>
+                      <div class="slider-thumb" id="font-size-thumb"></div>
+                    </div>
+                    <button class="slider-btn" onclick="adjustFontSize(1)" aria-label="تكبير الخط">+</button>
+                  </div>
+                  <span class="slider-value" id="font-size-value">100%</span>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="highContrastLabel">التباين العالي</span>
+                  <span class="setting-desc" data-i18n="highContrastDesc">ألوان عالية التباين للقراءة الأسهل</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-high-contrast" onclick="toggleHighContrast()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="voiceGuidanceLabel">التوجيه الصوتي</span>
+                  <span class="setting-desc" data-i18n="voiceGuidanceDesc">تعليمات صوتية أثناء التوجيه</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-voice-guidance" checked onclick="toggleVoiceGuidance()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="ttsSpeedLabel">سرعة القراءة الصوتية (TTS)</span>
+                  <span class="setting-desc" data-i18n="ttsSpeedDesc">ضبط سرعة النطق للنصوص الممسوحة</span>
+                </div>
+                <div class="setting-control">
+                  <select id="tts-speed-setting" class="form-select" onchange="setTTSSetting(this.value)">
+                    <option value="0.75" data-i18n="speedSlow">بطيئة (0.75x)</option>
+                    <option value="1.0" selected data-i18n="speedNormal">عادية (1.0x)</option>
+                    <option value="1.25" data-i18n="speedFast">سريعة (1.25x)</option>
+                    <option value="1.5" data-i18n="speedVeryFast">سريعة جداً (1.5x)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="reduceMotionLabel">تقليل الحركة</span>
+                  <span class="setting-desc" data-i18n="reduceMotionDesc">تعطيل الرسوم المتحركة والانتقالات</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-reduce-motion" onclick="toggleReduceMotion()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="screenReaderLabel">دعم قارئ الشاشة</span>
+                  <span class="setting-desc" data-i18n="screenReaderDesc">تحسين التسميات وترتيب التركيز</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-screen-reader" checked onclick="toggleScreenReaderSupport()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+            </div>
+
+            <!-- Navigation Preferences Section -->
+            <div class="settings-section">
+              <div class="settings-section-header">
+                <span class="section-icon">🗺️</span>
+                <h3 class="settings-section-title" data-i18n="navPrefsTitle">تفضيلات التوجيه</h3>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="avoidStairsLabel">تجنب الدرج افتراضياً</span>
+                  <span class="setting-desc" data-i18n="avoidStairsDesc">إعطاء أولوية للمسارات بدون درجات</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-avoid-stairs" checked onclick="toggleAvoidStairs()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="preferRampsLabel">تفضيل المنحدرات</span>
+                  <span class="setting-desc" data-i18n="preferRampsDesc">اختيار المسارات ذات المنحدرات المؤكدة</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-prefer-ramps" checked onclick="togglePreferRamps()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="maxSlopeLabel">أقصى انحدار مقبول</span>
+                  <span class="setting-desc" data-i18n="maxSlopeDesc">تعيين حد الانحدار للمسارات المقترحة</span>
+                </div>
+                <div class="setting-control">
+                  <select id="max-slope-setting" class="form-select" onchange="setMaxSlope(this.value)">
+                    <option value="3" data-i18n="slope3">3% (معيار إمكانية الوصول)</option>
+                    <option value="5" data-i18n="slope5">5%</option>
+                    <option value="8" data-i18n="slope8">8%</option>
+                    <option value="10" data-i18n="slope10">10%</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="mapOrientationLabel">اتجاه الخريطة الافتراضي</span>
+                  <span class="setting-desc" data-i18n="mapOrientationDesc">رأساً لحركة السير أو الشمال للأعلى</span>
+                </div>
+                <div class="setting-control">
+                  <div class="segmented-control">
+                    <button class="segment-btn active" data-mode="heading" onclick="setDefaultMapMode('heading')" data-i18n="headingUp">اتجاه الحركة</button>
+                    <button class="segment-btn" data-mode="north" onclick="setDefaultMapMode('north')" data-i18n="northUp">الشمال للأعلى</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="wakelockLabel">إبقاء الشاشة مضاءة أثناء التوجيه</span>
+                  <span class="setting-desc" data-i18n="wakelockDesc">منع قفل الشاشة أثناء الرحلة النشطة</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-wakelock" checked onclick="toggleWakelock()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+            </div>
+
+            <!-- Data & Privacy Section -->
+            <div class="settings-section">
+              <div class="settings-section-header">
+                <span class="section-icon">🔒</span>
+                <h3 class="settings-section-title" data-i18n="dataPrivacyTitle">البيانات والخصوصية</h3>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="offlineMapsLabel">خرائط بلا إنترنت</span>
+                  <span class="setting-desc" data-i18n="offlineMapsDesc">تحميل الخرائط للمناطق المتكررة</span>
+                </div>
+                <button class="btn-outlined btn-small" onclick="showToast('تحميل الخرائط بلا إنترنت - تجريبية')" data-i18n="btnManageOffline">إدارة</button>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="dataSharingLabel">مشاركة بيانات البلاغات مجهول الهوية</span>
+                  <span class="setting-desc" data-i18n="dataSharingDesc">مساعدة تحسين الخرائط للمجتمع</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-data-sharing" checked onclick="toggleDataSharing()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="locationHistoryLabel">سجل المواقع المحفوظ</span>
+                  <span class="setting-desc" data-i18n="locationHistoryDesc">إدارة وحذف سجل التنقل</span>
+                </div>
+                <button class="btn-outlined btn-small" onclick="showToast('إدارة سجل المواقع - تجريبية')" data-i18n="btnManageHistory">إدارة</button>
+              </div>
+
+              <div class="setting-item danger-zone">
+                <div class="setting-info">
+                  <span class="setting-label" data-i18n="deleteAccountLabel">حذف الحساب</span>
+                  <span class="setting-desc" data-i18n="deleteAccountDesc">إزالة جميع البيانات نهائياً</span>
+                </div>
+                <button class="btn-danger btn-small" onclick="showToast('حذف الحساب - تجريبية')" data-i18n="btnDeleteAccount">حذف</button>
+              </div>
+
+            </div>
+
+            <!-- Emergency Contacts Section -->
+            <div class="settings-section">
+              <div class="settings-section-header">
+                <span class="section-icon">🚨</span>
+                <h3 class="settings-section-title" data-i18n="emergencyContactsTitle">جهات اتصال الطوارئ</h3>
+              </div>
+
+              <div class="emergency-contacts-list" id="emergency-contacts-list">
+                <div class="contact-card">
+                  <div class="contact-avatar">م</div>
+                  <div class="contact-info">
+                    <span class="contact-name">محمد الكيالي</span>
+                    <span class="contact-role" data-i18n="primaryContact">المرافق الرئيسي</span>
+                    <span class="contact-phone">+966 50 000 0001 <span class="demo-tag">[Demo] [Simulated]</span></span>
+                  </div>
+                  <button class="btn-icon-small" onclick="showToast('تحرير جهة الاتصال - تجريبية [Demo UI]')" aria-label="تحرير">✏️</button>
+                </div>
+                <div class="contact-card">
+                  <div class="contact-avatar emergency-avatar">٩٩٩</div>
+                  <div class="contact-info">
+                    <span class="contact-name">خدمات الطوارئ التجريبية</span>
+                    <span class="contact-role" data-i18n="emergencyService">خدمة طوارئ رسمية</span>
+                    <span class="contact-phone">999 <span class="demo-tag">[Demo] [Simulated]</span></span>
+                  </div>
+                  <span class="system-badge" data-i18n="systemContact">نظامي [Simulated]</span>
+                </div>
+              </div>
+
+              <button class="btn-outlined btn-add-contact" onclick="showToast('إضافة جهة اتصال طوارئ - تجريبية')" data-i18n="btnAddEmergencyContact">
+                + إضافة جهة اتصال طوارئ
+              </button>
+
+            </div>
+
+            <!-- App Info Section -->
+            <div class="settings-section">
+              <div class="settings-section-header">
+                <span class="section-icon">ℹ️</span>
+                <h3 class="settings-section-title" data-i18n="appInfoTitle">حول التطبيق</h3>
+              </div>
+
+              <div class="app-info-list">
+                <div class="info-row">
+                  <span class="info-label" data-i18n="versionLabel">الإصدار</span>
+                  <span class="info-value">1.0.0-beta (Graduation Project)</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label" data-i18n="buildLabel">البناء</span>
+                  <span class="info-value">Demo Prototype — Nov 2024</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label" data-i18n="ocrModelLabel">نموذج OCR</span>
+                  <span class="info-value">TFLite INT8 CRNN (On-Device)</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label" data-i18n="licenseLabel">الترخيص</span>
+                  <span class="info-value">MIT — مشروع تخرج جامعي</span>
+                </div>
+              </div>
+
+              <div class="app-links">
+                <button class="btn-text-link" onclick="showToast('سياسة الخصوصية - تجريبية')" data-i18n="privacyPolicy">سياسة الخصوصية</button>
+                <button class="btn-text-link" onclick="showToast('شروط الاستخدام - تجريبية')" data-i18n="termsOfUse">شروط الاستخدام</button>
+                <button class="btn-text-link" onclick="showToast('إبلاغ عن خطأ - تجريبية')" data-i18n="reportBug">إبلاغ عن مشكلة</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div> <!-- End screen-content-area -->
+
+      <!-- Persistent 4-Tab Bottom Navigation Bar -->
+      <nav class="app-bottom-nav" id="bottom-nav">
+        <button class="nav-tab active" data-target="scr-home" onclick="navigateTo('scr-home')">
+          <span class="tab-icon">🏠</span>
+          <span class="tab-label" data-i18n="tabHome">الرئيسية</span>
+        </button>
+        <button class="nav-tab" data-target="scr-search" onclick="navigateTo('scr-search')">
+          <span class="tab-icon">🗺️</span>
+          <span class="tab-label" data-i18n="tabExplore">استكشاف</span>
+        </button>
+        <button class="nav-tab" data-target="scr-report" onclick="navigateTo('scr-report')">
+          <span class="tab-icon">📢</span>
+          <span class="tab-label" data-i18n="tabReports">البلاغات</span>
+        </button>
+        <button class="nav-tab" data-target="scr-profile" onclick="navigateTo('scr-profile')">
+          <span class="tab-icon">👤</span>
+          <span class="tab-label" data-i18n="tabProfile">حسابي</span>
+        </button>
+      </nav>
+
+    </div> <!-- End mobile-frame -->
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL DIALOGS (INTERACTIVE PROTOTYPE)     -->
+  <!-- ========================================== -->
+
+  <!-- 1. SOS Emergency Confirmation Modal (SCR-08) -->
+  <div class="modal-overlay" id="modal-sos">
+    <div class="modal-card modal-sos-card" role="dialog" aria-labelledby="sos-title">
+      <div class="modal-header-sos">
+        <span class="sos-alert-icon">🚨</span>
+        <h2 id="sos-title" data-i18n="sosModalTitle">طلب طوارئ واستغاثة (SOS)</h2>
+      </div>
+
+      <div class="sos-modal-body">
+        <div class="info-box-alert">
+          <h3 data-i18n="sosStatusHeader">حالة الموقع والشبكة الموفرة:</h3>
+          <p>• <strong data-i18n="sosGPS">إحداثيات الموقع الحالي:</strong> 24.7136° N, 46.6753° E <span class="demo-tag">[Simulated]</span></p>
+          <p>• <strong data-i18n="sosAccuracy">دقة GPS المقاسة:</strong> ±7.4 متر (من خادم جهازك) <span class="demo-tag">[Simulated]</span></p>
+          <p>• <strong data-i18n="sosNet">حالة الاتصال:</strong> <span class="text-success" data-i18n="netOnline">متصل بالإنترنت</span></p>
+        </div>
+
+        <div class="contacts-preview">
+          <h4 data-i18n="sosContactsTitle">المستلمون المصرح لهم:</h4>
+          <p>1. محمد الكيالي (المرافق الرئيسي) — +966 50 000 0001 <span class="demo-tag">[Demo] [Simulated]</span></p>
+          <p>2. خدمات الطوارئ التجريبية — 999 <span class="demo-tag">[Demo] [Simulated]</span></p>
+        </div>
+
+        <!-- Honest Dispatch Feedback Box -->
+        <div class="dispatch-feedback-box hidden" id="sos-dispatch-result">
+          <p id="sos-feedback-text"></p>
+        </div>
+
+        <div class="sos-actions">
+          <button class="btn-sos-send" onclick="executeSOSDispatch()" data-i18n="btnSendSOS">
+            إرسال تنبيه الطوارئ الآن
+          </button>
+
+          <button class="btn-outlined btn-sos-cancel" onclick="closeSOSModal()" data-i18n="btnCancelSOS">
+            إلغاء والعودة
+          </button>
+        </div>
+
+        <p class="sos-footnote" data-i18n="sosFootnote">
+          توضيح: عند عدم توفر إنترنت، سيعرض التطبيق سيناريو SMS احتياطياً [محاكاة] — لا يتم فتح تطبيق الرسائل الحقيقي في هذا النموذج التجريبي.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. AI Visual Assistant Modal (SCR-05/06) -->
+  <div class="modal-overlay" id="modal-ai">
+    <div class="modal-card modal-ai-card" role="dialog" aria-labelledby="ai-title">
+      <div class="modal-header">
+        <h2 id="ai-title" data-i18n="aiModalTitle">المساعد البصري الذكي (OCR)</h2>
+        <button class="btn-close-modal" onclick="closeAIModal()">✕</button>
+      </div>
+
+      <div class="ai-modal-body">
+        <!-- Live Viewfinder Simulation -->
+        <div class="ocr-viewfinder-box" id="ocr-viewfinder">
+          <div class="ocr-frame-box">
+            <span class="frame-tag" data-i18n="ocrFrameTag">وجه الكاميرا نحو النص أو الدواء</span>
+            <div class="ocr-scan-line"></div>
+          </div>
+          <button class="btn-primary btn-capture-ocr" onclick="simulateOCRScan()" data-i18n="btnCaptureOCR">
+            📸 التقاط وقراءة النص
+          </button>
+        </div>
+
+        <!-- OCR Result View (Hidden by default) -->
+        <div class="ocr-results-box hidden" id="ocr-results-view">
+          <!-- Low-Confidence Safety Warning Banner -->
+          <div class="warning-banner-amber">
+            <strong data-i18n="ocrWarnTitle">⚠️ تنبيه سلامة هام (دقة القراءة 62%):</strong>
+            <p data-i18n="ocrWarnText">هذه قراءة آلية تجريبية. تأكد شخصياً من اسم ومقدار جرعات الأدوية قبل تناولها.</p>
+          </div>
+
+          <div class="ocr-text-content" id="ocr-text-body">
+            <span class="demo-tag">[Simulated OCR Output]</span>
+            "تناول حبة واحدة مرتين يومياً بعد الطعام. يحفظ في مكان بارد وجاف بعيداً عن أشعة الشمس."
+          </div>
+
+          <!-- TTS Audio Controls -->
+          <div class="tts-controls-bar">
+            <button class="btn-tts-action" onclick="playTTSSpeech()" data-i18n="btnPlayTTS">▶️ قراءة صوتية</button>
+            <button class="btn-tts-action" onclick="changeTTSSpeed()" id="btn-tts-speed">⚡ 1.0x</button>
+            <button class="btn-tts-action" onclick="resetOCRView()" data-i18n="btnRescan">🔄 مسح جديد</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Obstacle Reporting Modal (SCR-07) -->
+  <div class="modal-overlay" id="modal-report">
+    <div class="modal-card" role="dialog" aria-labelledby="report-title">
+      <div class="modal-header">
+        <h2 id="report-title" data-i18n="reportModalTitle">إبلاغ عن عائق في الطريق</h2>
+        <button class="btn-close-modal" onclick="closeReportModal()">✕</button>
+      </div>
+
+      <div class="report-modal-body">
+        <label class="form-label" data-i18n="selectCategory">اختر نوع العائق:</label>
+        <select id="report-category" class="form-select">
+          <option value="ramp" data-i18n="catRamp">منحدر مسدود أو غير صالح</option>
+          <option value="elevator" data-i18n="catElevator">مصعد معطل عن العمل</option>
+          <option value="construction" data-i18n="catConstruction">أعمال صيانة تعترض الرصيف</option>
+          <option value="stairs" data-i18n="catStairs">درج بدون منحدر بديل</option>
+        </select>
+
+        <div class="location-fix-info">
+          <p>• <strong data-i18n="repLocation">موقع التقرير:</strong> إحداثيات GPS الحالية <span class="demo-tag">[Simulated]</span></p>
+          <p>• <strong data-i18n="repAccuracy">الدقة المقاسة:</strong> ±6.8 متر <span class="demo-tag">[Simulated]</span></p>
+        </div>
+
+        <button class="btn-outlined btn-add-photo" onclick="showToast('تمت محاكاة إرفاق صورة العائق')">
+          📷 إرفاق صورة (اختياري)
+        </button>
+
+        <button class="btn-primary btn-submit-report" onclick="submitObstacleReport()" data-i18n="btnSubmitReport">
+          إرسال البلاغ للتحقق المجتمعي
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. End Navigation Confirmation Modal -->
+  <div class="modal-overlay" id="modal-end-nav">
+    <div class="modal-card modal-alert-card">
+      <h3 data-i18n="endNavTitle">تأكيد إنهاء التوجيه</h3>
+      <p data-i18n="endNavDesc">هل أنت تأكد من رغبتك في إنهاء رحلة التوجيه الحالية إلى المكتبة المركزية؟</p>
+
+      <div class="modal-actions-row">
+        <button class="btn-primary" onclick="closeEndNavModal()" data-i18n="btnResumeNav">متابعة التوجيه</button>
+        <button class="btn-outlined btn-danger" onclick="executeEndTrip()" data-i18n="btnConfirmEnd">إنهاء الرحلة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Bar -->
+  <div class="toast-container" id="toast-bar">
+    <span id="toast-message">تنبيه تجريبي</span>
+  </div>
+
+  <!-- JavaScript Application Bundle -->
+  <script src="js/app.js"></script>
+</body>
+</html>
